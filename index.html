@@ -11,28 +11,33 @@
   </head>
   <body>
     <!-- Header Section -->
-    <header>
-      <h1>Media Player Cooking</h1>
+    <header class="site-header">
+      <h1>Echoes in the Static</h1>
+      <p>Experimental audiovisual work · 2026</p>
     </header>
-
-    <!-- Navigation Section -->
-    <nav>
-      <ul>
-        <li><a href="https://rohitashokkhot.github.io/mediaplayer/#">Home</a></li>
-        <li><a href="https://rohitashokkhot.github.io/mediaplayer/#">Videos</a></li>
-        <li><a href="https://rohitashokkhot.github.io/mediaplayer/#">Music</a></li>
-        <li><a href="https://rohitashokkhot.github.io/mediaplayer/#">Playlists</a></li>
-        <!-- Add or remove navigation items as needed -->
-      </ul>
-    </nav>
 
     <!-- Main Content Section -->
     <main class="container">
-      <!-- Media Player Section -->
+     
+      <button id="immersive-btn">
+        ENTER THE STATIC
+      </button>
+      
       <div class="media-player">
-        <video id="custom-video-player">
-          <source src="https://thelongesthumstore.sgp1.cdn.digitaloceanspaces.com/IM-2250/miac.mp4" type="video/mp4">
-        </video>
+        <div class="video-visual">
+          
+         <video id="custom-video-player">
+           <source src="https://thelongesthumstore.sgp1.cdn.digitaloceanspaces.com/IM-2250/miac.mp4" type="video/mp4">
+         </video>
+
+         <div class="video-spotlight"></div>
+         <button class="video-play-overlay" id="video-play-overlay"
+                 aria-label="Play video">
+            ▶
+         </button>
+
+        </div>
+
         <div class="custom-controls">
           <button id="play-pause-btn" onclick="togglePlayPause()">
             <img id="play-pause-img" src="./play--v1.png" alt="Play Button" width="24" height="24">
@@ -45,12 +50,45 @@
       </div>
 
       <!-- Additional Content Section -->
-      <section>
-        <h2>Additional Content</h2>
-        <p>This is where you can showcase any other relevant content.</p>
-        <!-- Add more content as needed -->
-      </section>
-    </main>
+      <section class="about-piece">
+        <div class="about-description">
+         <p class="section-label">ABOUT THE WORK</p>
+
+         <h2>Between signal<br>and distortion.</h2>
+
+         <p class="description">
+            Echoes in the Static explores the relationship between
+            digital structure, repetition and visual distortion.
+            Through shifting abstract forms and layered sound,
+            the work creates an immersive audiovisual experience
+            that moves between order and chaos.
+         </p>
+        </div>
+
+        <div class="work-details">
+
+        <div class="detail">
+          <span>YEAR</span>
+          <p>2026</p>
+        </div>
+
+        <div class="detail">
+           <span>MEDIUM</span>
+           <p>Experimental Video</p>
+        </div>
+
+        <div class="detail">
+          <span>FORMAT</span>
+          <p>Audiovisual</p>
+        </div>
+
+        <div class="detail">
+          <span>EXPERIENCE</span>
+          <p>Digital / Interactive</p>
+        </div>
+      </div>
+    </section>
+  </main>
 
     <!-- Footer Section -->
     <footer>
