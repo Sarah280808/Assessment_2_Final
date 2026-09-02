@@ -1,101 +1,680 @@
-let overlayTimer;
+/* =========================
+   ELEMENT REFERENCES
+   ========================= */
+
+const video =
+  document.querySelector(
+    "#custom-video-player"
+  );
+
+
+const playPauseBtn =
+  document.querySelector(
+    "#play-pause-btn"
+  );
+
+
+const playPauseSymbol =
+  document.querySelector(
+    "#play-pause-symbol"
+  );
+
+
+const progressBar =
+  document.querySelector(
+    "#progress-bar"
+  );
+
+
+const progressBarFill =
+  document.querySelector(
+    "#progress-bar-fill"
+  );
+
+
+const timeDisplay =
+  document.querySelector(
+    "#time-display"
+  );
+
+
+const videoVisual =
+  document.querySelector(
+    ".video-visual"
+  );
+
+
+const videoSpotlight =
+  document.querySelector(
+    ".video-spotlight"
+  );
+
+
 const videoPlayOverlay =
-  document.querySelector("#video-play-overlay");
-const video = document.querySelector("#custom-video-player");
-const playPauseBtn = document.querySelector("#play-pause-btn");
-const playPauseImg = document.querySelector("#play-pause-img");
-const progressBar = document.querySelector("#progress-bar-fill");
-const videoVisual = document.querySelector(".video-visual");
-const videoSpotlight = document.querySelector(".video-spotlight");
-const immersiveBtn = document.querySelector("#immersive-btn");
-const mediaPlayer = document.querySelector(".media-player");
+  document.querySelector(
+    "#video-play-overlay"
+  );
 
-videoVisual.addEventListener("mousemove", function (event) {
-  const rect = videoVisual.getBoundingClientRect();
 
-  const x = event.clientX - rect.left;
-  const y = event.clientY - rect.top;
+const muteBtn =
+  document.querySelector(
+    "#mute-btn"
+  );
 
-  videoSpotlight.style.left = x + "px";
-  videoSpotlight.style.top = y + "px";
-  videoSpotlight.style.opacity = "1";
-});
 
-videoPlayOverlay.addEventListener("click", function () {
-  video.play();
-});
+const volumeSlider =
+  document.querySelector(
+    "#volume-slider"
+  );
 
-videoVisual.addEventListener("mouseleave", function () {
-  videoSpotlight.style.opacity = "0";
-});
+
+const immersiveBtn =
+  document.querySelector(
+    "#immersive-btn"
+  );
+
+
+
+/* Native browser controls are removed because
+   this project uses a custom interface. */
+
 video.removeAttribute("controls");
-// playPauseBtn.addEventListener("click", togglePlayPause);
-video.addEventListener("timeupdate", updateProgressBar);
 
-video.addEventListener("play", function () {
-  clearTimeout(overlayTimer);
 
-  videoPlayOverlay.style.opacity = "0";
-  videoPlayOverlay.style.pointerEvents = "none";
-});
 
-video.addEventListener("pause", function () {
-  clearTimeout(overlayTimer);
+/* =========================
+   INITIAL PLAYER STATE
+   ========================= */
 
-  videoPlayOverlay.style.opacity = "1";
-  videoPlayOverlay.style.pointerEvents = "auto";
+video.volume = 0.7;
 
-  overlayTimer = setTimeout(function () {
-    videoPlayOverlay.style.opacity = "0";
-    videoPlayOverlay.style.pointerEvents = "none";
-  }, 2000);
-});
 
-video.addEventListener("ended", function () {
-  videoPlayOverlay.style.opacity = "1";
-  videoPlayOverlay.style.pointerEvents = "auto";
-});
+/* Autoplay is muted because modern browsers
+   commonly block autoplay with sound. */
 
-videoPlayOverlay.addEventListener("click", function () {
-  video.play();
-});
+video.muted = true;
+
+muteBtn.classList.add("muted");
+
+
+
+/* =========================
+   PLAY / PAUSE
+   ========================= */
 
 function togglePlayPause() {
-  if (video.paused || video.ended) {
 
-    video.muted = false;
+  if (
+    video.paused ||
+    video.ended
+  ) {
+
     video.play();
-
-    playPauseImg.src = "https://img.icons8.com/ios-glyphs/30/pause--v1.png";
 
   } else {
 
     video.pause();
 
-    playPauseImg.src = "https://img.icons8.com/ios-glyphs/30/play--v1.png";
   }
+
 }
+
+
+
+playPauseBtn.addEventListener(
+  "click",
+  togglePlayPause
+);
+
+
+
+/* Keep visual controls synchronised with
+   the actual state of the video. */
+
+video.addEventListener(
+  "play",
+  function () {
+
+    playPauseSymbol.textContent =
+      "❚❚";
+
+
+    clearTimeout(
+      overlayTimer
+    );
+
+
+    hideVideoOverlay();
+
+  }
+);
+
+
+
+video.addEventListener(
+  "pause",
+  function () {
+
+    playPauseSymbol.textContent =
+      "▶";
+
+
+    showVideoOverlayTemporarily();
+
+  }
+);
+
+
+
+video.addEventListener(
+  "ended",
+  function () {
+
+    playPauseSymbol.textContent =
+      "▶";
+
+
+    videoPlayOverlay.style.opacity =
+      "1";
+
+
+    videoPlayOverlay.style.pointerEvents =
+      "auto";
+
+  }
+);
+
+
+
+/* =========================
+   VIDEO PLAY OVERLAY
+   ========================= */
+
+let overlayTimer;
+
+
+
+function hideVideoOverlay() {
+
+  videoPlayOverlay.style.opacity =
+    "0";
+
+
+  videoPlayOverlay.style.pointerEvents =
+    "none";
+
+}
+
+
+
+function showVideoOverlayTemporarily() {
+
+  clearTimeout(
+    overlayTimer
+  );
+
+
+  videoPlayOverlay.style.opacity =
+    "1";
+
+
+  videoPlayOverlay.style.pointerEvents =
+    "auto";
+
+
+  overlayTimer =
+    setTimeout(
+      function () {
+
+        hideVideoOverlay();
+
+      },
+
+      2000
+    );
+
+}
+
+
+
+videoPlayOverlay.addEventListener(
+  "click",
+  function () {
+
+    video.play();
+
+  }
+);
+
+
+
+/* =========================
+   VIDEO TIME + PROGRESS
+   ========================= */
+
+video.addEventListener(
+  "timeupdate",
+  updateProgressBar
+);
+
+
+
+video.addEventListener(
+  "loadedmetadata",
+  updateProgressBar
+);
+
+
 
 function updateProgressBar() {
-  const value = (video.currentTime / video.duration) * 100;
-  progressBar.style.width = value + "%";
+
+  if (
+    !video.duration ||
+    isNaN(video.duration)
+  ) {
+
+    return;
+
+  }
+
+
+  const percentage =
+
+    (
+      video.currentTime /
+      video.duration
+    )
+
+    * 100;
+
+
+  progressBarFill.style.width =
+    percentage + "%";
+
+
+  progressBar.setAttribute(
+    "aria-valuenow",
+    Math.round(percentage)
+  );
+
+
+  timeDisplay.textContent =
+
+    formatTime(
+      video.currentTime
+    )
+
+    +
+
+    " / "
+
+    +
+
+    formatTime(
+      video.duration
+    );
+
 }
-// Add other functionalities here
 
-let immersiveMode = false;
 
-immersiveBtn.addEventListener("click", toggleImmersiveMode);
+
+function formatTime(seconds) {
+
+  const minutes =
+    Math.floor(
+      seconds / 60
+    );
+
+
+  const remainingSeconds =
+    Math.floor(
+      seconds % 60
+    );
+
+
+  return (
+
+    String(minutes)
+      .padStart(
+        2,
+        "0"
+      )
+
+    +
+
+    ":"
+
+    +
+
+    String(
+      remainingSeconds
+    )
+      .padStart(
+        2,
+        "0"
+      )
+
+  );
+
+}
+
+
+
+/* =========================
+   SEEK TIMELINE
+   ========================= */
+
+function seekVideo(event) {
+
+  if (
+    !video.duration ||
+    isNaN(video.duration)
+  ) {
+
+    return;
+
+  }
+
+
+  const rect =
+    progressBar
+      .getBoundingClientRect();
+
+
+  let position =
+
+    (
+      event.clientX -
+      rect.left
+    )
+
+    /
+
+    rect.width;
+
+
+  /* Prevent values below 0
+     or above 1. */
+
+  position =
+    Math.max(
+      0,
+      Math.min(
+        1,
+        position
+      )
+    );
+
+
+  video.currentTime =
+    position *
+    video.duration;
+
+}
+
+
+
+/* Click anywhere on timeline */
+
+progressBar.addEventListener(
+  "click",
+  seekVideo
+);
+
+
+
+/* Drag along timeline */
+
+let isSeeking =
+  false;
+
+
+
+progressBar.addEventListener(
+  "pointerdown",
+  function (event) {
+
+    isSeeking = true;
+
+
+    progressBar.setPointerCapture(
+      event.pointerId
+    );
+
+
+    seekVideo(event);
+
+  }
+);
+
+
+
+progressBar.addEventListener(
+  "pointermove",
+  function (event) {
+
+    if (!isSeeking) {
+      return;
+    }
+
+
+    seekVideo(event);
+
+  }
+);
+
+
+
+progressBar.addEventListener(
+  "pointerup",
+  function () {
+
+    isSeeking = false;
+
+  }
+);
+
+
+
+progressBar.addEventListener(
+  "pointercancel",
+  function () {
+
+    isSeeking = false;
+
+  }
+);
+
+
+
+/* =========================
+   SOUND / MUTE
+   ========================= */
+
+muteBtn.addEventListener(
+  "click",
+  function () {
+
+    video.muted =
+      !video.muted;
+
+
+    updateMuteInterface();
+
+  }
+);
+
+
+
+function updateMuteInterface() {
+
+  const silent =
+
+    video.muted ||
+
+    video.volume === 0;
+
+
+  muteBtn.classList.toggle(
+    "muted",
+    silent
+  );
+
+
+  if (silent) {
+
+    muteBtn.setAttribute(
+      "aria-label",
+      "Unmute sound"
+    );
+
+  } else {
+
+    muteBtn.setAttribute(
+      "aria-label",
+      "Mute sound"
+    );
+
+  }
+
+}
+
+
+
+/* =========================
+   VOLUME
+   ========================= */
+
+volumeSlider.addEventListener(
+  "input",
+  function () {
+
+    const newVolume =
+      Number(
+        volumeSlider.value
+      );
+
+
+    video.volume =
+      newVolume;
+
+
+    if (
+      newVolume === 0
+    ) {
+
+      video.muted =
+        true;
+
+    } else {
+
+      video.muted =
+        false;
+
+    }
+
+
+    updateMuteInterface();
+
+  }
+);
+
+
+
+/* =========================
+   VIDEO SPOTLIGHT
+   ========================= */
+
+videoVisual.addEventListener(
+  "mousemove",
+  function (event) {
+
+    const rect =
+      videoVisual
+        .getBoundingClientRect();
+
+
+    const x =
+      event.clientX -
+      rect.left;
+
+
+    const y =
+      event.clientY -
+      rect.top;
+
+
+    videoSpotlight.style.left =
+      x + "px";
+
+
+    videoSpotlight.style.top =
+      y + "px";
+
+
+    videoSpotlight.style.opacity =
+      "1";
+
+  }
+);
+
+
+
+videoVisual.addEventListener(
+  "mouseleave",
+  function () {
+
+    videoSpotlight.style.opacity =
+      "0";
+
+  }
+);
+
+
+
+/* =========================
+   IMMERSIVE MODE
+   ========================= */
+
+let immersiveMode =
+  false;
+
+
+
+immersiveBtn.addEventListener(
+  "click",
+  toggleImmersiveMode
+);
+
+
 
 function toggleImmersiveMode() {
 
-  immersiveMode = !immersiveMode;
+  immersiveMode =
+    !immersiveMode;
 
-  document.body.classList.toggle("immersive-mode", immersiveMode);
+
+  document.body
+    .classList
+    .toggle(
+      "immersive-mode",
+      immersiveMode
+    );
+
 
   if (immersiveMode) {
-    immersiveBtn.textContent = "EXIT THE STATIC";
+
+    immersiveBtn.textContent =
+      "EXIT THE STATIC";
+
+
     video.play();
+
   } else {
-    immersiveBtn.textContent = "ENTER THE STATIC";
+
+    immersiveBtn.textContent =
+      "ENTER THE STATIC";
+
   }
+
 }

@@ -1,103 +1,273 @@
 <!DOCTYPE html>
-<!-- saved from url=(0045)https://rohitashokkhot.github.io/mediaplayer/ -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <!-- add the font family of your choice -->
-    <link rel="stylesheet" href="reset.css">
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
-  </head>
-  <body>
-    <!-- Header Section -->
-    <header class="site-header">
-      <h1>Echoes in the Static</h1>
-      <p>Experimental audiovisual work · 2026</p>
-    </header>
 
-    <!-- Main Content Section -->
-    <main class="container">
-     
-      <button id="immersive-btn">
-        ENTER THE STATIC
-      </button>
-      
-      <div class="media-player">
-        <div class="video-visual">
-          
-         <video id="custom-video-player">
-           <source src="https://thelongesthumstore.sgp1.cdn.digitaloceanspaces.com/IM-2250/miac.mp4" type="video/mp4">
-         </video>
+<html lang="en">
 
-         <div class="video-spotlight"></div>
-         <button class="video-play-overlay" id="video-play-overlay"
-                 aria-label="Play video">
-            ▶
-         </button>
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Echoes in the Static</title>
+
+  <link rel="stylesheet" href="reset.css">
+  <link rel="stylesheet" href="style.css">
+
+  <script src="script.js" defer></script>
+</head>
+
+
+<body>
+
+  <!-- =========================
+       HEADER
+       ========================= -->
+
+  <header class="site-header">
+
+    <h1>Echoes in the Static</h1>
+
+    <p>
+      Experimental audiovisual work · 2026
+    </p>
+
+  </header>
+
+
+
+  <!-- =========================
+       MAIN CONTENT
+       ========================= -->
+
+  <main class="container">
+
+    <!-- Additional interaction created for
+         the Video Art context -->
+
+    <button id="immersive-btn">
+      ENTER THE STATIC
+    </button>
+
+
+
+    <!-- =========================
+         MEDIA PLAYER
+         ========================= -->
+
+    <div class="media-player">
+
+
+      <!-- Video visual area -->
+
+      <div class="video-visual">
+
+        <video
+          id="custom-video-player"
+          autoplay
+          muted
+          playsinline
+        >
+
+          <source
+            src="https://thelongesthumstore.sgp1.cdn.digitaloceanspaces.com/IM-2250/miac.mp4"
+            type="video/mp4"
+          >
+
+        </video>
+
+
+        <!-- Mouse spotlight -->
+
+        <div class="video-spotlight"></div>
+
+
+        <!-- Appears briefly when video is paused -->
+
+        <button
+          class="video-play-overlay"
+          id="video-play-overlay"
+          aria-label="Play video"
+        >
+          ▶
+        </button>
+
+      </div>
+
+
+
+      <!-- =========================
+           CUSTOM CONTROLS
+           ========================= -->
+
+      <div class="custom-controls">
+
+
+        <!-- Play / Pause -->
+
+        <button
+          id="play-pause-btn"
+          aria-label="Play or pause video"
+        >
+          <span id="play-pause-symbol">❚❚</span>
+        </button>
+
+
+
+        <!-- Current time -->
+
+        <span id="time-display">
+          00:00 / 00:00
+        </span>
+
+
+
+        <!-- Video timeline -->
+
+        <div
+          class="progress-bar"
+          id="progress-bar"
+          role="slider"
+          aria-label="Video progress"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+        >
+
+          <span id="progress-bar-fill"></span>
 
         </div>
 
-        <div class="custom-controls">
-          <button id="play-pause-btn" onclick="togglePlayPause()">
-            <img id="play-pause-img" src="./play--v1.png" alt="Play Button" width="24" height="24">
+
+
+        <!-- Sound controls -->
+
+        <div class="volume-control">
+
+          <button
+            id="mute-btn"
+            class="muted"
+            aria-label="Unmute sound"
+          >
+            <span class="speaker-icon"></span>
           </button>
-          <!-- add the missing buttons or functionality here -->
-          <div class="progress-bar">
-            <span id="progress-bar-fill"></span>
-          </div>
+
+
+          <input
+            type="range"
+            id="volume-slider"
+            min="0"
+            max="1"
+            step="0.01"
+            value="0.7"
+            aria-label="Volume"
+          >
+
         </div>
+
       </div>
 
-      <!-- Additional Content Section -->
-      <section class="about-piece">
-        <div class="about-description">
-         <p class="section-label">ABOUT THE WORK</p>
+    </div>
 
-         <h2>Between signal<br>and distortion.</h2>
 
-         <p class="description">
-            Echoes in the Static explores the relationship between
-            digital structure, repetition and visual distortion.
-            Through shifting abstract forms and layered sound,
-            the work creates an immersive audiovisual experience
-            that moves between order and chaos.
-         </p>
-        </div>
 
-        <div class="work-details">
+    <!-- =========================
+         ABOUT THE WORK
+         ========================= -->
+
+    <section class="about-piece">
+
+
+      <div class="about-description">
+
+        <p class="section-label">
+          ABOUT THE WORK
+        </p>
+
+
+        <h2>
+          Between signal<br>
+          and distortion.
+        </h2>
+
+
+        <p class="description">
+          Echoes in the Static explores the relationship between
+          digital structure, repetition and visual distortion.
+          Through shifting abstract forms and layered sound,
+          the work creates an immersive audiovisual experience
+          that moves between order and chaos.
+        </p>
+
+      </div>
+
+
+
+      <div class="work-details">
+
 
         <div class="detail">
+
           <span>YEAR</span>
+
           <p>2026</p>
+
         </div>
 
-        <div class="detail">
-           <span>MEDIUM</span>
-           <p>Experimental Video</p>
-        </div>
 
         <div class="detail">
+
+          <span>MEDIUM</span>
+
+          <p>Experimental Video</p>
+
+        </div>
+
+
+        <div class="detail">
+
           <span>FORMAT</span>
+
           <p>Audiovisual</p>
+
         </div>
 
+
         <div class="detail">
+
           <span>EXPERIENCE</span>
+
           <p>Digital / Interactive</p>
+
         </div>
+
+
       </div>
+
     </section>
+
   </main>
 
-    <!-- Footer Section -->
-    <footer>
-      <p>© 2024 Media Player Website. All rights reserved.</p>
-      <a href="https://icons8.com/icon/59862/play">Play</a> icon by
-      <a href="https://icons8.com/">Icons8</a>
-      <a href="https://icons8.com/icon/61012/pause">Pause</a> icon by
-      <a href="https://icons8.com/">Icons8</a>
-    </footer>
-  
 
-</body></html>
+
+  <!-- =========================
+       FOOTER
+       ========================= -->
+
+  <footer>
+
+    <p>
+      Echoes in the Static · 2026
+    </p>
+
+    <p class="footer-credit">
+      Interface designed by Duyen Do
+    </p>
+
+  </footer>
+
+
+</body>
+
+</html>
