@@ -1929,3 +1929,190 @@ body.immersive-mode
   }
 
 }
+
+/* =========================
+   ANALOG GRAIN / NOISE
+   ========================= */
+
+.grain-overlay {
+  position: fixed;
+  inset: -50%;
+
+  width: 200%;
+  height: 200%;
+
+  pointer-events: none;
+
+  z-index: 9999;
+
+  opacity: 0.035;
+
+  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+
+  animation: grain-move 0.25s steps(2) infinite;
+}
+
+@keyframes grain-move {
+
+  0% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(-2%, 1%);
+  }
+
+  50% {
+    transform: translate(1%, -2%);
+  }
+
+  75% {
+    transform: translate(2%, 2%);
+  }
+
+  100% {
+    transform: translate(-1%, -1%);
+  }
+
+}
+
+/* =========================
+   SIGNAL MESSAGE
+   ========================= */
+
+#signal-message {
+
+  position: absolute;
+
+  left: 50%;
+  bottom: 18%;
+
+  transform: translateX(-50%);
+
+  padding: 8px 14px;
+
+  font-size: 0.62rem;
+  letter-spacing: 3px;
+
+  color: rgba(245, 225, 255, 0.75);
+
+  border: 1px solid rgba(220, 170, 255, 0.25);
+
+  background: rgba(10, 3, 15, 0.35);
+
+  backdrop-filter: blur(6px);
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  white-space: nowrap;
+
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+
+}
+
+#signal-message.show {
+
+  opacity: 1;
+
+  transform: translateX(-50%) translateY(-5px);
+
+}
+
+/* =========================
+   METADATA REVEAL
+   ========================= */
+
+.detail {
+
+  opacity: 0;
+
+  transform: translateY(18px);
+
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease,
+    padding-left 0.3s ease,
+    border-color 0.3s ease;
+
+}
+
+.detail.visible {
+
+  opacity: 1;
+
+  transform: translateY(0);
+
+}
+
+.detail:nth-child(1) {
+  transition-delay: 0s;
+}
+
+.detail:nth-child(2) {
+  transition-delay: 0.12s;
+}
+
+.detail:nth-child(3) {
+  transition-delay: 0.24s;
+}
+
+.detail:nth-child(4) {
+  transition-delay: 0.36s;
+}
+
+/* =========================
+   SECRET STATIC MODE
+   ========================= */
+
+body.secret-static {
+
+  background: #000;
+
+}
+
+body.secret-static .site-header h1 {
+
+  animation:
+    secret-glitch 0.12s infinite,
+    title-glow 1s ease-in-out infinite alternate;
+
+}
+
+body.secret-static .site-header p,
+body.secret-static .about-piece,
+body.secret-static footer,
+body.secret-static .custom-controls {
+
+  opacity: 0.08;
+
+  transition: opacity 0.5s ease;
+
+}
+
+@keyframes secret-glitch {
+
+  0% {
+    transform: translate(0);
+  }
+
+  25% {
+    transform: translate(-3px, 1px);
+  }
+
+  50% {
+    transform: translate(3px, -1px);
+  }
+
+  75% {
+    transform: translate(-1px, -2px);
+  }
+
+  100% {
+    transform: translate(0);
+  }
+
+}

@@ -73,7 +73,11 @@ const immersiveBtn =
     "#immersive-btn"
   );
 
+const signalMessage =
+  document.querySelector(
+    "#signal-message");
 
+let signalTimer;
 
 /* Native browser controls are removed because
    this project uses a custom interface. */
@@ -126,7 +130,21 @@ playPauseBtn.addEventListener(
   togglePlayPause
 );
 
+function showSignalMessage(message) {
 
+  clearTimeout(signalTimer);
+
+  signalMessage.textContent = message;
+
+  signalMessage.classList.add("show");
+
+  signalTimer = setTimeout(function () {
+
+    signalMessage.classList.remove("show");
+
+  }, 1300);
+
+}
 
 /* Keep visual controls synchronised with
    the actual state of the video. */
@@ -134,6 +152,7 @@ playPauseBtn.addEventListener(
 video.addEventListener(
   "play",
   function () {
+    showSignalMessage("SIGNAL DETECTED");
 
     playPauseSymbol.textContent =
       "❚❚";
@@ -154,6 +173,10 @@ video.addEventListener(
 video.addEventListener(
   "pause",
   function () {
+    if (!video.ended) {
+    showSignalMessage("SIGNAL INTERRUPTED");
+  }
+
 
     playPauseSymbol.textContent =
       "▶";
@@ -676,5 +699,73 @@ function toggleImmersiveMode() {
       "ENTER THE STATIC";
 
   }
+
+}
+
+const details = document.querySelectorAll(".detail");
+
+const detailObserver = new IntersectionObserver(
+  function (entries) {
+
+    entries.forEach(function (entry) {
+
+      if (entry.isIntersecting) {
+
+        entry.target.classList.add("visible");
+
+      }
+
+    });
+
+  },
+  {
+    threshold: 0.2
+  }
+);
+
+details.forEach(function (detail) {
+
+  detailObserver.observe(detail);
+
+});
+
+const siteTitle = document.querySelector("#site-title");
+
+let titleClicks = 0;
+let titleClickTimer;
+
+siteTitle.addEventListener("click", function () {
+
+  titleClicks++;
+
+  clearTimeout(titleClickTimer);
+
+  titleClickTimer = setTimeout(function () {
+
+    titleClicks = 0;
+
+  }, 800);
+
+  if (titleClicks === 3) {
+
+    titleClicks = 0;
+
+    activateSecretStatic();
+
+  }
+
+});
+
+function activateSecretStatic() {
+
+  document.body.classList.add("secret-static");
+
+  showSignalMessage("SIGNAL LOST");
+
+  setTimeout(function () {
+
+    document.body.classList.remove("secret-static");
+
+  }, 3000);
 
 }
